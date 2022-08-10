@@ -22,7 +22,8 @@ version: "3.4"
 services:
   danbooru:
     user: root
-    image: ghcr.io/danbooru/danbooru:production
+    build: .
+      #image: ghcr.io/danbooru/danbooru:production
     ports:
       - "3000:3000"
     environment:
