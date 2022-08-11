@@ -25,15 +25,16 @@ services:
     build: .
       #image: ghcr.io/danbooru/danbooru:production
     ports:
-      - "3000:3000"
-    environment:
+      - "localhost:33318:3000"
+    environment: &production_envs
       - RAILS_ENV=production
       - RAILS_SERVE_STATIC_FILES=true
       - PUMA_WORKERS=1
       - DATABASE_URL=postgresql://danbooru@postgres/danbooru
       - DANBOORU_REDIS_URL=redis://redis:6379
       - DANBOORU_IQDB_URL=http://iqdb:5588
-      - DANBOORU_CANONICAL_URL=http://localhost:3000
+      - DANBOORU_AUTOTAGGER_URL=http/://autotagger:5000
+        # - DANBOORU_CANONICAL_URL: set in config ruby file
     volumes:
       - "danbooru-images:/danbooru/public/data"
     tmpfs:
@@ -45,12 +46,7 @@ services:
   cron:
     user: root
     image: ghcr.io/danbooru/danbooru:production
-    environment:
-      - RAILS_ENV=production
-      - DATABASE_URL=postgresql://danbooru@postgres/danbooru
-      - DANBOORU_REDIS_URL=redis://redis:6379
-      - DANBOORU_IQDB_URL=http://iqdb:5588
-      - DANBOORU_CANONICAL_URL=http://localhost
+    environment: *production_envs
     depends_on:
       - danbooru
     volumes:
@@ -61,12 +57,7 @@ services:
     # We need root to write temp upload files in the images directory (/danbooru/public/data)
     user: root
     image: ghcr.io/danbooru/danbooru:production
-    environment:
-      - RAILS_ENV=production
-      - DATABASE_URL=postgresql://danbooru@postgres/danbooru
-      - DANBOORU_REDIS_URL=redis://redis:6379
-      - DANBOORU_IQDB_URL=http://iqdb:5588
-      - DANBOORU_CANONICAL_URL=http://localhost
+    environment: *production_envs
     depends_on:
       - danbooru
     volumes:
@@ -81,6 +72,9 @@ services:
     volumes:
       - "iqdb-data:/iqdb/data"
     command: ["http", "0.0.0.0", "5588", "/iqdb/data/iqdb.sqlite"]
+
+  autotagger:
+    image: ghcr.io/danbooru/autotagger
 
   redis:
     image: redis
