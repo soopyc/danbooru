@@ -13,19 +13,18 @@
     </p>
 
     <div id="p3">
-      <%#= edit_form_for(@user, html: { id: "signup-form" }) do |f| %>
-        <%#= f.input :name, as: :string %>
-        <%#= f.input :email, label: "Email", required: false, as: :email, input_html: { value: "" }, hint: "Optional" %>
-        <%#= f.input :password %>
-        <%#= f.input :password_confirmation %>
+      <%= edit_form_for(@user, html: { id: "signup-form" }) do |f| %>
+        <%= f.input :name, as: :string %>
+        <%= f.input :email, label: "Email", required: false, as: :email, input_html: { value: "" }, hint: "Optional" %>
+        <%= f.input :password %>
+        <%= f.input :password_confirmation %>
 
-        <%# if Danbooru.config.enable_recaptcha? %>
-          <%#= invisible_recaptcha_tags callback: 'submitInvisibleRecaptchaForm', text: 'Sign up' %>
-        <%# else %>
-          <%#= f.submit "Sign up", :data => { :disable_with => "Signing up..." } %>
-        <%# end %>
-      <%# end %>
-      Signups are disabled!!
+        <% if Danbooru.config.enable_recaptcha? %>
+          <%= invisible_recaptcha_tags callback: 'submitInvisibleRecaptchaForm', text: 'Sign up' %>
+        <% else %>
+          <%= f.submit "Sign up", :data => { :disable_with => "Signing up..." } %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
