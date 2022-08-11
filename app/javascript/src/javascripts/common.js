@@ -38,6 +38,6 @@ $(function() {
   }
 });
 
-window.submitInvisibleRecaptchaForm = function () {
-  document.getElementById("signup-form").submit();
-}
+//window.submitInvisibleRecaptchaForm = function () {
+//  document.getElementById("signup-form").submit();
+//}
